@@ -249,7 +249,7 @@ jobs:
 
       - name: Upload ROS logs
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: logs-${{ inputs.ros-distro }}-${{ inputs.alpine-version }}
           path: ${{ env.ROS_LOG_DIR }}
