@@ -101,6 +101,17 @@ jobs:
           env_file=$(mktemp)
           printenv ABUILD_ENV >${env_file}
 
+          pkg_name=$(basename $(pwd))
+
+          rosinstall_files=
+          for file in ${ROSINSTALL_FILES}; then
+            rosinstall_files="${rosinstall_files} ${pkg_name}/${file}"
+          fi
+          manifest_files=
+          for file in ${MANIFEST_FILES}; then
+            manifest_files="${manifest_files} ${pkg_name}/${file}"
+          fi
+
           mkdir -p ${APORTS_DIR} ${BUILD_LOG_DIR} ${ROS_LOG_DIR} ${BUILD_CACHE_DIR} ${GCOV_DIR}
           chmod -R a+rw ${APORTS_DIR} ${BUILD_LOG_DIR} ${ROS_LOG_DIR} ${BUILD_CACHE_DIR} ${GCOV_DIR}
           docker run --rm \
@@ -113,8 +124,8 @@ jobs:
             -e ROS_HOSTNAME=localhost \
             -e CFLAGS=-coverage \
             -e CXXFLAGS=-coverage \
-            -e ROSINSTALL_FILES \
-            -e MANIFEST_FILES \
+            -e ROSINSTALL_FILES="${rosinstall_files}" \
+            -e MANIFEST_FILES="${manifest_files}" \
             --env-file ${env_file} \
             -v $(pwd):/src/$(basename $(pwd)):ro \
             -v ${APORTS_DIR}:/aports \
