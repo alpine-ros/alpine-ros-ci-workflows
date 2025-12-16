@@ -30,6 +30,10 @@ on:
         description: "Rosinstall files to be used as external dependency sources. Automatically detected if not specified"
         type: string
         default: ""
+      no-rosinstall-files:
+        description: "Disable loading rosinstall files as external dependency sources"
+        type: bool
+        default: false
       manifest-files:
         description: "Package manifet files to be tested. Automatically detected if not specified"
         type: string
@@ -96,6 +100,7 @@ jobs:
         env:
           ABUILD_ENV: ${{ inputs.abuild-env }}
           ROSINSTALL_FILES: ${{ inputs.rosinstall-files }}
+          NO_ROSINSTALL_FILES: ${{ inputs.no-rosinstall-files }}
           MANIFEST_FILES: ${{ inputs.manifest-files }}
         run: |
           env_file=$(mktemp)
@@ -107,6 +112,10 @@ jobs:
           for file in ${ROSINSTALL_FILES}; do
             rosinstall_files="${rosinstall_files} ${pkg_name}/${file}"
           done
+          if [ "${NO_ROSINSTALL_FILES}" = true ]; then
+            rosinstall_files=" "
+          fi
+
           manifest_files=
           for file in ${MANIFEST_FILES}; do
             manifest_files="${manifest_files} ${pkg_name}/${file}"
