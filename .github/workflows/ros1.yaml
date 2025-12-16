@@ -26,6 +26,14 @@ on:
         description: "Environment variables applied to abuild container"
         type: string
         default: ""
+      rosinstall-files:
+        description: "Rosinstall files to be used as external dependency sources. Automatically detected if not specified"
+        type: string
+        default: ""
+      manifest-files:
+        description: "Package manifet files to be tested. Automatically detected if not specified"
+        type: string
+        default: ""
       repository:
         description: "Repository slug to checkout. Mainly for internal testing"
         type: string
@@ -87,6 +95,8 @@ jobs:
         id: test
         env:
           ABUILD_ENV: ${{ inputs.abuild-env }}
+          ROSINSTALL_FILES: ${{ inputs.rosinstall-files }}
+          MANIFEST_FILES: ${{ inputs.manifest-files }}
         run: |
           env_file=$(mktemp)
           printenv ABUILD_ENV >${env_file}
@@ -103,6 +113,8 @@ jobs:
             -e ROS_HOSTNAME=localhost \
             -e CFLAGS=-coverage \
             -e CXXFLAGS=-coverage \
+            -e ROSINSTALL_FILES \
+            -e MANIFEST_FILES \
             --env-file ${env_file} \
             -v $(pwd):/src/$(basename $(pwd)):ro \
             -v ${APORTS_DIR}:/aports \

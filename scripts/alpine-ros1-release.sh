@@ -43,6 +43,8 @@ Environments:
   META_PACKAGE:
     Overwrite the meta-package name
     current: ${meta_package}
+  MANIFEST_FILES:
+    Explicitly specify manifest file paths instead of automatically detecting
 EOS
   exit 1
 fi
@@ -81,7 +83,7 @@ if [ ${base_branch} == "HEAD" ]; then
   git checkout -b ${base_branch}
 fi
 
-manifests=$(find . -name package.xml)
+manifests=${MANIFEST_FILES:-$(find . -name package.xml)}
 ver_meta_pkg=
 packages=
 for m in ${manifests}; do
