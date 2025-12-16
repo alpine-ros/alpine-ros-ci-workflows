@@ -104,13 +104,13 @@ jobs:
           pkg_name=$(basename $(pwd))
 
           rosinstall_files=
-          for file in ${ROSINSTALL_FILES}; then
+          for file in ${ROSINSTALL_FILES}; do
             rosinstall_files="${rosinstall_files} ${pkg_name}/${file}"
-          fi
+          done
           manifest_files=
-          for file in ${MANIFEST_FILES}; then
+          for file in ${MANIFEST_FILES}; do
             manifest_files="${manifest_files} ${pkg_name}/${file}"
-          fi
+          done
 
           mkdir -p ${APORTS_DIR} ${BUILD_LOG_DIR} ${ROS_LOG_DIR} ${BUILD_CACHE_DIR} ${GCOV_DIR}
           chmod -R a+rw ${APORTS_DIR} ${BUILD_LOG_DIR} ${ROS_LOG_DIR} ${BUILD_CACHE_DIR} ${GCOV_DIR}
