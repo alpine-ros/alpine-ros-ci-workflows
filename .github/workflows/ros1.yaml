@@ -32,7 +32,7 @@ on:
         default: ""
       no-rosinstall-files:
         description: "Disable loading rosinstall files as external dependency sources"
-        type: bool
+        type: boolean
         default: false
       manifest-files:
         description: "Package manifet files to be tested. Automatically detected if not specified"
