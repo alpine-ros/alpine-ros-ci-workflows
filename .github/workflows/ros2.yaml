@@ -26,6 +26,18 @@ on:
         description: "Environment variables applied to abuild container"
         type: string
         default: ""
+      rosinstall-files:
+        description: "Rosinstall files to be used as external dependency sources. Automatically detected if not specified"
+        type: string
+        default: ""
+      no-rosinstall-files:
+        description: "Disable loading rosinstall files as external dependency sources"
+        type: boolean
+        default: false
+      manifest-files:
+        description: "Package manifet files to be tested. Automatically detected if not specified"
+        type: string
+        default: ""
       repository:
         description: "Repository slug to checkout. Mainly for internal testing"
         type: string
@@ -87,9 +99,27 @@ jobs:
         id: test
         env:
           ABUILD_ENV: ${{ inputs.abuild-env }}
+          ROSINSTALL_FILES: ${{ inputs.rosinstall-files }}
+          NO_ROSINSTALL_FILES: ${{ inputs.no-rosinstall-files }}
+          MANIFEST_FILES: ${{ inputs.manifest-files }}
         run: |
           env_file=$(mktemp)
           printenv ABUILD_ENV >${env_file}
+
+          pkg_name=$(basename $(pwd))
+
+          rosinstall_files=
+          for file in ${ROSINSTALL_FILES}; do
+            rosinstall_files="${rosinstall_files} ${pkg_name}/${file}"
+          done
+          if [ "${NO_ROSINSTALL_FILES}" = true ]; then
+            rosinstall_files=" "
+          fi
+
+          manifest_files=
+          for file in ${MANIFEST_FILES}; do
+            manifest_files="${manifest_files} ${pkg_name}/${file}"
+          done
 
           mkdir -p ${APORTS_DIR} ${BUILD_LOG_DIR} ${ROS_LOG_DIR} ${BUILD_CACHE_DIR} ${GCOV_DIR}
           chmod -R a+rw ${APORTS_DIR} ${BUILD_LOG_DIR} ${ROS_LOG_DIR} ${BUILD_CACHE_DIR} ${GCOV_DIR}
@@ -101,6 +131,8 @@ jobs:
             -e ROS_LOG_DIR=/home/builder/.ros/log \
             -e CFLAGS=-coverage \
             -e CXXFLAGS=-coverage \
+            -e ROSINSTALL_FILES="${rosinstall_files}" \
+            -e MANIFEST_FILES="${manifest_files}" \
             --env-file ${env_file} \
             -v $(pwd):/src/$(basename $(pwd)):ro \
             -v ${APORTS_DIR}:/aports \
@@ -247,7 +279,7 @@ jobs:
 
       - name: Upload ROS logs
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: logs-${{ inputs.ros-distro }}-${{ inputs.alpine-version }}
           path: ${{ env.ROS_LOG_DIR }}
