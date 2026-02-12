@@ -13,11 +13,18 @@ permissions:
 
 jobs:
   test:
+    strategy:
+      fail-fast: false
+      matrix:
+        ALPINE_VERSION: ["3.20"]
+        ROS_DISTRO: ["humble", "jazzy"]
     uses: ./.github/workflows/ros2.yaml
     with:
       enable-bot-comment: true
       repository: alpine-ros/sample-ros2-pkg
       enable-codecov: true
       internal-dryrun-codecov: true
+      alpine-version: ${{ matrix.ALPINE_VERSION }}
+      ros-distro: ${{ matrix.ROS_DISTRO }}
     secrets:
       bot-comment-token: ${{ secrets.GITHUB_TOKEN }}
