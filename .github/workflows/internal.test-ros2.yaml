@@ -1,0 +1,23 @@
+name: ci
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  packages: read
+  issues: write
+  pull-requests: write
+
+jobs:
+  test:
+    uses: ./.github/workflows/ros2.yaml
+    with:
+      enable-bot-comment: true
+      repository: alpine-ros/sample-ros2-pkg
+      enable-codecov: true
+      internal-dryrun-codecov: true
+    secrets:
+      bot-comment-token: ${{ secrets.GITHUB_TOKEN }}
