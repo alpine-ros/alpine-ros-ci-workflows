@@ -264,7 +264,7 @@ case ${answer:0:1} in
     ;;
 esac
 
-echo "Pushing to rosdistro1 fork: ${release_branch_name}"
+echo "Pushing to rosdistro fork: ${release_branch_name}"
 git -C ${rosdistro_tmp} push fork ${release_branch_name}
 
 sleep 1
