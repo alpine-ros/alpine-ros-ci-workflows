@@ -49,7 +49,7 @@ on:
         type: string
         required: true
       git-email:
-        description: "Git email to commit release data nad rosdistro update"
+        description: "Git email to commit release data and rosdistro update"
         type: string
         required: true
       repository:
