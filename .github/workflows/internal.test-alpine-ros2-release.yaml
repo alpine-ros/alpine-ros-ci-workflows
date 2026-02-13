@@ -17,10 +17,10 @@ jobs:
     uses: ./.github/workflows/alpine-ros2-release.yaml
     with:
       ros-distro: ${{ matrix.ros-distro }}
-      source-repo-slug: alpine-ros/sample2-ros-pkg
+      source-repo-slug: alpine-ros/sample-ros2-pkg
       source-branch: main
       release-ref: 0.0.0
-      release-repo-slug: alpine-ros/sample2-ros-pkg-release
+      release-repo-slug: alpine-ros/sample-ros2-pkg-release
       rosdistro-repo-slug: alpine-ros/rosdistro
       rosdistro-repo-branch: alpine-custom-apk
       rosdistro-fork-slug: alpine-ros-bot/rosdistro
