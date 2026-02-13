@@ -5,7 +5,7 @@ on:
       ros-distro:
         description: "ROS distribution name"
         type: string
-        default: humble
+        required: true
       alpine-version:
         description: "Alpine Linux version"
         type: string
