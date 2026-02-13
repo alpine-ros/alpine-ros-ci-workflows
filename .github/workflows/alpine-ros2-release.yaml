@@ -45,7 +45,7 @@ on:
         type: boolean
         default: true
       git-user:
-        description: "Git user name to commit release data nad rosdistro update"
+        description: "Git user name to commit release data and rosdistro update"
         type: string
         required: true
       git-email:
