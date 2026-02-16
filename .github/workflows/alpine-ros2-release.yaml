@@ -27,7 +27,7 @@ on:
       rosdistro-repo-slug:
         description: "Upstream rosdistro repository slug"
         type: string
-        default: alpine-ros/rosdistro
+        required: true
       rosdistro-repo-branch:
         description: "Upstream rosdistro repository branch"
         type: string
