@@ -1,13 +1,13 @@
-# Release ROS 1 package to Alpine ROS.
+# Release ROS 2 package to Alpine ROS.
 
-name: Alpine ROS 1 release workflow
+name: Alpine ROS 2 release workflow
 on:
   workflow_call:
     inputs:
       ros-distro:
         description: "ROS distribution name"
         type: string
-        default: noetic
+        required: true
       source-repo-slug:
         description: "Package repository slug"
         type: string
@@ -27,15 +27,15 @@ on:
       rosdistro-repo-slug:
         description: "Upstream rosdistro repository slug"
         type: string
-        default: alpine-ros/rosdistro1
+        required: true
       rosdistro-repo-branch:
         description: "Upstream rosdistro repository branch"
         type: string
-        default: main
+        default: alpine-custom-apk
       rosdistro-fork-slug:
-        description: "Rosdistro repository slug to push PR branches. You need to fork alpine-ros/rosdistro1 beforehand"
+        description: "Rosdistro repository slug to push PR branches. You need to fork alpine-ros/rosdistro beforehand"
         type: string
-        default: ${{ github.repository_owner }}/rosdistro1
+        default: ${{ github.repository_owner }}/rosdistro
       manifest-files:
         description: "Package manifet files to be released. Automatically detected if not specified"
         type: string
@@ -45,11 +45,11 @@ on:
         type: boolean
         default: true
       git-user:
-        description: "Git user name to commit release data nad rosdistro update"
+        description: "Git user name to commit release data and rosdistro update"
         type: string
         required: true
       git-email:
-        description: "Git email to commit release data nad rosdistro update"
+        description: "Git email to commit release data and rosdistro update"
         type: string
         required: true
       repository:
@@ -69,7 +69,7 @@ on:
         required: false
 
 jobs:
-  alpine-ros1-release:
+  alpine-ros2-release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
