@@ -1,4 +1,10 @@
 # Create release candidate PR which updates CHANGELOG.rst and package.xml.
+#
+# This workflow is designed to be triggered by issues open events.
+# Issues created by COLLABORATOR, MEMBER, and OWNER can trigger the workflow
+# by default.
+# If you want to use this for other events, set force-allow=true
+# and specify custom conditions to limit the caller.
 
 name: ROS 1 package release candidate workflow
 on:
@@ -28,6 +34,14 @@ on:
         description: "PR assignee"
         type: string
         required: true
+      allowed-issue-author-association:
+        description: "JSON list of allowed issue author associations"
+        type: string
+        default: '["COLLABORATOR","MEMBER","OWNER"]'
+      force-allow:
+        description: "Set true to run the workflow for events other than issues events"
+        type: boolean
+        default: false
     secrets:
       token:
         description: "GitHub token to open release candidate PR"
@@ -43,6 +57,7 @@ on:
 jobs:
   release-candidate:
     runs-on: ubuntu-latest
+    if: inputs.force-allow || contains(fromJSON(inputs.allowed-issue-author-association), github.event.issue.author_association)
     outputs:
       pr-branch: ${{ steps.create-release.outputs.created_branch }}
       version: ${{ steps.create-release.outputs.version }}
