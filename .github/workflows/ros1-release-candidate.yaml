@@ -28,6 +28,10 @@ on:
         description: "PR assignee"
         type: string
         required: true
+      allowed-author-association:
+        description: "JSON list of allowed author_association to create PR"
+        type: string
+        default: '["COLLABORATOR","MEMBER","OWNER"]'
     secrets:
       token:
         description: "GitHub token to open release candidate PR"
@@ -43,6 +47,7 @@ on:
 jobs:
   release-candidate:
     runs-on: ubuntu-latest
+    if: contains(fromJSON(inputs.allowed-author-association), github.event.issue.author_association)
     outputs:
       pr-branch: ${{ steps.create-release.outputs.created_branch }}
       version: ${{ steps.create-release.outputs.version }}
