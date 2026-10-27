@@ -89,7 +89,7 @@ jobs:
         if: inputs.enable-bot-comment
         uses: at-wat/setup-gh-pr-comment@v0
       - name: Login to public GitHub Container Registry
-        uses: docker/login-action@v3
+        uses: docker/login-action@v4
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
