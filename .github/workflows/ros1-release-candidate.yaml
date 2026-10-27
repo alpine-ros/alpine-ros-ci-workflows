@@ -1,4 +1,10 @@
 # Create release candidate PR which updates CHANGELOG.rst and package.xml.
+#
+# This workflow is designed to be triggered by issues open events.
+# Issues created by COLLABORATOR, MEMBER, and OWNER can trigger the workflow
+# by default.
+# If you want to use this for other events, set force-allow=true
+# and specify custom conditions to limit the caller.
 
 name: ROS 1 package release candidate workflow
 on:
